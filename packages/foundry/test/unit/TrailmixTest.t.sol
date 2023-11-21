@@ -3,7 +3,7 @@
 pragma solidity 0.8.20;
 
 import {DeployTrailMix} from "../../script/DeployTrailMix.s.sol";
-import {TrailMix} from "../../src/TrailMixV2.sol";
+import {TrailMix} from "../../contracts/TrailMix.sol";
 import {HelperConfig} from "../../script/HelperConfig.s.sol";
 import {Test, console} from "forge-std/Test.sol";
 import {StdCheats} from "forge-std/StdCheats.sol";
