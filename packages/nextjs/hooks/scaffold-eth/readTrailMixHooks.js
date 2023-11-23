@@ -1,86 +1,91 @@
-import { useScaffoldContractRead } from "~~/hooks/scaffold-eth";
+import { abi } from "/home/kaifeinberg/foundry-f23/scaffold-trailmix/packages/foundry/out/TrailMix.sol/TrailMix.json";
+import { useContractRead } from "wagmi";
 
-export const getERC20Balance = () => {
-    const { data: erc20Balance } = useScaffoldContractRead({
-        contractName: "TrailMix",
-        functionName: "getERC20Balance",
-    });
+export function getERC20Balance(contractAddress) {
+  const { data: erc20Balance } = useContractRead({
+    address: contractAddress,
+    abi: abi,
+    functionName: "getERC20Balance",
+  });
 
-    return erc20Balance;
+  return erc20Balance;
 }
 
-export const getStablecoinBalance = () => {
-    const { data: stablecoinBalance } = useScaffoldContractRead({
-        contractName: "TrailMix",
-        functionName: "getStablecoinBalance",
-    });
+// export const getStablecoinBalance = () => {
+//     const { data: stablecoinBalance } = useScaffoldContractRead({
+//         contractName: "TrailMix",
+//         functionName: "getStablecoinBalance",
+//     });
 
-    return stablecoinBalance;
-}
+//     return stablecoinBalance;
+// }
 
-export const getTSLThreshold = () => {
-    const { data: tslThreshold } = useScaffoldContractRead({
-        contractName: "TrailMix",
-        functionName: "getTSLThreshold",
-    });
+// export const getTSLThreshold = () => {
+//     const { data: tslThreshold } = useScaffoldContractRead({
+//         contractName: "TrailMix",
+//         functionName: "getTSLThreshold",
+//     });
 
-    return tslThreshold;
-}
-
-
-export const isTSLActive = () => {
-    const { data: activeTSL } = useScaffoldContractRead({
-        contractName: "TrailMix",
-        functionName: "isTSLActive",
-    });
-
-    return activeTSL;
-};
+//     return tslThreshold;
+// }
 
 
-export const getERC20TokenAddress = () => {
-    const { data: erc20TokenAddress } = useScaffoldContractRead({
-        contractName: "TrailMix",
-        functionName: "getERC20TokenAddress",
-    });
+// export const isTSLActive = () => {
+//     const { data: activeTSL } = useScaffoldContractRead({
+//         contractName: "TrailMix",
+//         functionName: "isTSLActive",
+//     });
 
-    return erc20TokenAddress;
-}
-
-export const getStablecoinAddress = () => {
-    const { data: stablecoinAddress } = useScaffoldContractRead({
-        contractName: "TrailMix",
-        functionName: "getStablecoinAddress",
-    });
-
-    return stablecoinAddress;
-}
+//     return activeTSL;
+// };
 
 
-export const getUniswapRouterAddress = () => {
-    const { data: uniswapRouterAddress } = useScaffoldContractRead({
-        contractName: "TrailMix",
-        functionName: "getUniswapRouterAddress",
-    });
+// export const getERC20TokenAddress = () => {
+//     const { data: erc20TokenAddress } = useScaffoldContractRead({
+//         contractName: "TrailMix",
+//         functionName: "getERC20TokenAddress",
+//     });
 
-    return uniswapRouterAddress;
-}
+//     return erc20TokenAddress;
+// }
 
-export const getPriceFeedAddress = () => {
-    const { data: priceFeedAddress } = useScaffoldContractRead({
-        contractName: "TrailMix",
-        functionName: "getPriceFeedAddress",
-    });
+// export const getStablecoinAddress = () => {
+//     const { data: stablecoinAddress } = useScaffoldContractRead({
+//         contractName: "TrailMix",
+//         functionName: "getStablecoinAddress",
+//     });
 
-    return priceFeedAddress;
-}
+//     return stablecoinAddress;
+// }
 
-export const getTrailAmount = () => {
-    const { data: trailAmount } = useScaffoldContractRead({
-        contractName: "TrailMix",
-        functionName: "getTrailAmount",
-    });
 
-    return trailAmount;
-}
+// export const getUniswapRouterAddress = () => {
+//     const { data: uniswapRouterAddress } = useScaffoldContractRead({
+//         contractName: "TrailMix",
+//         functionName: "getUniswapRouterAddress",
+//     });
+
+//     return uniswapRouterAddress;
+// }
+
+// export const getPriceFeedAddress = () => {
+//     const { data: priceFeedAddress } = useScaffoldContractRead({
+//         contractName: "TrailMix",
+//         functionName: "getPriceFeedAddress",
+//     });
+
+//     return priceFeedAddress;
+// }
+
+// export const getTrailAmount = () => {
+//     const { data: trailAmount } = useScaffoldContractRead({
+//         contractName: "TrailMix",
+//         functionName: "getTrailAmount",
+//     });
+
+//     return trailAmount;
+// }
+
+
+
 

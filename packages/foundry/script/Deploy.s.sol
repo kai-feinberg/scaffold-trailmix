@@ -2,6 +2,7 @@
 pragma solidity ^0.8.19;
 
 import "../contracts/TrailMix.sol";
+import {TrailMixManager} from "../contracts/TrailMixManager.sol";
 import "./DeployHelpers.s.sol";
 import {HelperConfig} from "./HelperConfig.s.sol";
 
@@ -18,35 +19,12 @@ contract DeployScript is ScaffoldETHDeploy {
             );
         }
 
-        // vm.broadcast(deployerPrivateKey);
-        // HelperConfig helperConfig = new HelperConfig();
-        // (
-        //     address erc20Token,
-        //     address stablecoin,
-        //     address router,
-        //     address priceFeed
-        // ) = helperConfig.activeNetworkConfig();
-
+        
         vm.startBroadcast(deployerPrivateKey);
         console.log("deploying with account ", vm.addr(deployerPrivateKey));
         console.log("tx.origin", tx.origin);
 
-        // TrailMix yourContract = new TrailMix(
-        //     USER, // owner
-        //     erc20Token,
-        //     stablecoin,
-        //     router,
-        //     priceFeed,
-        //     10 //trail percent
-        // );
-        TrailMix yourContract = new TrailMix(
-            vm.addr(deployerPrivateKey), // owner
-            0x779877A7B0D9E8603169DdbD7836e478b4624789,
-            0x94a9D9AC8a22534E3FaCa9F4e7F2E2cf85d5E4C8,
-            0xc59E3633BAAC79493d908e63626716e204A45EdF,
-            0xC532a74256D3Db42D0Bf7a0400fEFDbad7694008,
-            10 //trail percent
-        );
+        TrailMixManager yourContract = new TrailMixManager();
         console.logString(
             string.concat(
                 "YourContract deployed at: ",

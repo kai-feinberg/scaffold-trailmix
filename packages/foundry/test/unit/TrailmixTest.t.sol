@@ -3,7 +3,11 @@
 pragma solidity 0.8.20;
 
 import {DeployTrailMix} from "../../script/DeployTrailMix.s.sol";
+import {DeployScript} from "../../script/Deploy.s.sol";
+
 import {TrailMix} from "../../contracts/TrailMix.sol";
+import {TrailMixManager} from "../../contracts/TrailMixManager.sol";
+
 import {HelperConfig} from "../../script/HelperConfig.s.sol";
 import {Test, console} from "forge-std/Test.sol";
 import {StdCheats} from "forge-std/StdCheats.sol";
@@ -319,9 +323,7 @@ contract TrailMixTest is StdCheats, Test {
         trailMix.withdraw();
         vm.stopPrank();
         assertEq(
-            MockERC20(trailMix.getERC20TokenAddress()).balanceOf(
-                USER
-            ),
+            MockERC20(trailMix.getERC20TokenAddress()).balanceOf(USER),
             depositAmount,
             "ERC20 balance mismatch after withdrawal"
         );
@@ -366,8 +368,7 @@ contract TrailMixTest is StdCheats, Test {
         vm.stopPrank();
     }
 
-    function testWithdrawWithInsufficientBalance() public activeTSL{
-
+    function testWithdrawWithInsufficientBalance() public activeTSL {
         console.log(trailMix.isTSLActive());
         vm.startPrank(USER);
         trailMix.withdraw(); // First withdrawal to empty the balance
@@ -406,5 +407,41 @@ contract TrailMixTest is StdCheats, Test {
         emit Withdraw(USER, DEPOSIT_AMOUNT);
         trailMix.withdraw();
         vm.stopPrank();
+    }
+}
+
+contract TrailMixManagerTest is StdCheats, Test {
+    TrailMixManager public trailMixManager;
+
+    address erc20Token;
+    address stablecoin;
+    address priceFeed;
+    address router;
+
+    uint256 public constant SEND_VALUE = 0.1 ether; // just a value to make sure we are sending enough!
+    uint256 public constant STARTING_USER_BALANCE = 10 ether;
+    uint256 public constant GAS_PRICE = 1;
+
+    address public constant USER = address(1);
+
+    address public TRAILMIX_MANAGER_ADDRESS;
+    event Withdraw(address indexed user, uint256 amount);
+
+    function setUp() external {
+        DeployScript deployer = new DeployScript();
+        deployer.run();
+        vm.deal(USER, STARTING_USER_BALANCE);
+        TRAILMIX_MANAGER_ADDRESS = address(trailMixManager);
+    }
+
+    function testDeployTrailMix() public {
+        trailMixManager = new TrailMixManager();
+        trailMixManager.deployTrailMix(
+            0x779877A7B0D9E8603169DdbD7836e478b4624789,
+            0x94a9D9AC8a22534E3FaCa9F4e7F2E2cf85d5E4C8,
+            0xc59E3633BAAC79493d908e63626716e204A45EdF,
+            0xC532a74256D3Db42D0Bf7a0400fEFDbad7694008,
+            10
+        );
     }
 }

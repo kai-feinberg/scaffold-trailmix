@@ -6,16 +6,36 @@ import { GenericContractsDeclaration } from "~~/utils/scaffold-eth/contract";
 
 const deployedContracts = {
   31337: {
-    TrailMix: {
-      address: "0x5FbDB2315678afecb367f032d93F642f64180aa3",
+    TrailMixManager: {
+      address: "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0",
       abi: [
         {
+          anonymous: false,
           inputs: [
             {
+              indexed: true,
               internalType: "address",
-              name: "_owner",
+              name: "user",
               type: "address",
             },
+            {
+              indexed: false,
+              internalType: "address",
+              name: "contractAddress",
+              type: "address",
+            },
+            {
+              indexed: false,
+              internalType: "uint256",
+              name: "timestamp",
+              type: "uint256",
+            },
+          ],
+          name: "ContractDeployed",
+          type: "event",
+        },
+        {
+          inputs: [
             {
               internalType: "address",
               name: "_erc20Token",
@@ -42,24 +62,61 @@ const deployedContracts = {
               type: "uint256",
             },
           ],
+          name: "deployTrailMix",
+          outputs: [],
           stateMutability: "nonpayable",
-          type: "constructor",
+          type: "function",
         },
         {
-          inputs: [],
-          name: "InvalidAmount",
-          type: "error",
+          inputs: [
+            {
+              internalType: "address",
+              name: "user",
+              type: "address",
+            },
+          ],
+          name: "getUserContracts",
+          outputs: [
+            {
+              internalType: "address[]",
+              name: "",
+              type: "address[]",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
         },
         {
-          inputs: [],
-          name: "ReentrancyGuardReentrantCall",
-          type: "error",
+          inputs: [
+            {
+              internalType: "address",
+              name: "",
+              type: "address",
+            },
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          name: "userContracts",
+          outputs: [
+            {
+              internalType: "address",
+              name: "",
+              type: "address",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
         },
-        {
-          inputs: [],
-          name: "TransferFailed",
-          type: "error",
-        },
+      ],
+    },
+  },
+  11155111: {
+    TrailMixManager: {
+      address: "0x871d9adBc69c200802A2FC645598045840c3c63F",
+      abi: [
         {
           anonymous: false,
           inputs: [
@@ -71,84 +128,67 @@ const deployedContracts = {
             },
             {
               indexed: false,
-              internalType: "uint256",
-              name: "amount",
-              type: "uint256",
-            },
-          ],
-          name: "Deposit",
-          type: "event",
-        },
-        {
-          anonymous: false,
-          inputs: [
-            {
-              indexed: false,
-              internalType: "uint256",
-              name: "amountIn",
-              type: "uint256",
+              internalType: "address",
+              name: "contractAddress",
+              type: "address",
             },
             {
               indexed: false,
               internalType: "uint256",
-              name: "amountOut",
+              name: "timestamp",
               type: "uint256",
             },
           ],
-          name: "SwapExecuted",
+          name: "ContractDeployed",
           type: "event",
         },
         {
-          anonymous: false,
           inputs: [
             {
-              indexed: false,
+              internalType: "address",
+              name: "_erc20Token",
+              type: "address",
+            },
+            {
+              internalType: "address",
+              name: "_stablecoin",
+              type: "address",
+            },
+            {
+              internalType: "address",
+              name: "_priceFeed",
+              type: "address",
+            },
+            {
+              internalType: "address",
+              name: "_uniswapRouter",
+              type: "address",
+            },
+            {
               internalType: "uint256",
-              name: "newThreshold",
+              name: "_trailAmount",
               type: "uint256",
             },
           ],
-          name: "TSLUpdated",
-          type: "event",
+          name: "deployTrailMix",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
         },
         {
-          anonymous: false,
           inputs: [
             {
-              indexed: true,
               internalType: "address",
               name: "user",
               type: "address",
             },
-            {
-              indexed: false,
-              internalType: "uint256",
-              name: "amount",
-              type: "uint256",
-            },
           ],
-          name: "Withdraw",
-          type: "event",
-        },
-        {
-          inputs: [
-            {
-              internalType: "bytes",
-              name: "",
-              type: "bytes",
-            },
-          ],
-          name: "checkUpkeep",
+          name: "getUserContracts",
           outputs: [
             {
-              internalType: "bool",
-              name: "upkeepNeeded",
-              type: "bool",
-            },
-            {
-              internalType: "bytes",
-              name: "performData",
-              type: "bytes",
+              internalType: "address[]",
+              name: "",
+              type: "address[]",
             },
           ],
           stateMutability: "view",
@@ -157,37 +197,17 @@ const deployedContracts = {
         {
           inputs: [
             {
-              internalType: "uint256",
-              name: "amount",
-              type: "uint256",
+              internalType: "address",
+              name: "",
+              type: "address",
             },
-            {
-              internalType: "uint256",
-              name: "tslThreshold",
-              type: "uint256",
-            },
-          ],
-          name: "deposit",
-          outputs: [],
-          stateMutability: "nonpayable",
-          type: "function",
-        },
-        {
-          inputs: [],
-          name: "getERC20Balance",
-          outputs: [
             {
               internalType: "uint256",
               name: "",
               type: "uint256",
             },
           ],
-          stateMutability: "view",
-          type: "function",
-        },
-        {
-          inputs: [],
-          name: "getERC20TokenAddress",
+          name: "userContracts",
           outputs: [
             {
               internalType: "address",
@@ -196,143 +216,6 @@ const deployedContracts = {
             },
           ],
           stateMutability: "view",
-          type: "function",
-        },
-        {
-          inputs: [],
-          name: "getLatestPrice",
-          outputs: [
-            {
-              internalType: "uint256",
-              name: "",
-              type: "uint256",
-            },
-          ],
-          stateMutability: "view",
-          type: "function",
-        },
-        {
-          inputs: [],
-          name: "getOwner",
-          outputs: [
-            {
-              internalType: "address",
-              name: "",
-              type: "address",
-            },
-          ],
-          stateMutability: "view",
-          type: "function",
-        },
-        {
-          inputs: [],
-          name: "getPriceFeedAddress",
-          outputs: [
-            {
-              internalType: "address",
-              name: "",
-              type: "address",
-            },
-          ],
-          stateMutability: "view",
-          type: "function",
-        },
-        {
-          inputs: [],
-          name: "getStablecoinAddress",
-          outputs: [
-            {
-              internalType: "address",
-              name: "",
-              type: "address",
-            },
-          ],
-          stateMutability: "view",
-          type: "function",
-        },
-        {
-          inputs: [],
-          name: "getStablecoinBalance",
-          outputs: [
-            {
-              internalType: "uint256",
-              name: "",
-              type: "uint256",
-            },
-          ],
-          stateMutability: "view",
-          type: "function",
-        },
-        {
-          inputs: [],
-          name: "getTSLThreshold",
-          outputs: [
-            {
-              internalType: "uint256",
-              name: "",
-              type: "uint256",
-            },
-          ],
-          stateMutability: "view",
-          type: "function",
-        },
-        {
-          inputs: [],
-          name: "getTrailAmount",
-          outputs: [
-            {
-              internalType: "uint256",
-              name: "",
-              type: "uint256",
-            },
-          ],
-          stateMutability: "view",
-          type: "function",
-        },
-        {
-          inputs: [],
-          name: "getUniswapRouterAddress",
-          outputs: [
-            {
-              internalType: "address",
-              name: "",
-              type: "address",
-            },
-          ],
-          stateMutability: "view",
-          type: "function",
-        },
-        {
-          inputs: [],
-          name: "isTSLActive",
-          outputs: [
-            {
-              internalType: "bool",
-              name: "",
-              type: "bool",
-            },
-          ],
-          stateMutability: "view",
-          type: "function",
-        },
-        {
-          inputs: [
-            {
-              internalType: "bytes",
-              name: "performData",
-              type: "bytes",
-            },
-          ],
-          name: "performUpkeep",
-          outputs: [],
-          stateMutability: "nonpayable",
-          type: "function",
-        },
-        {
-          inputs: [],
-          name: "withdraw",
-          outputs: [],
-          stateMutability: "nonpayable",
           type: "function",
         },
       ],
