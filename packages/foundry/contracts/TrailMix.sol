@@ -220,6 +220,10 @@ contract TrailMix is AutomationCompatibleInterface, ReentrancyGuard {
         return s_erc20Balance;
     }
 
+    function getStablecoinBalance() public view returns (uint256) {
+        return s_stablecoinBalance;
+    }
+
     function getTSLThreshold() public view returns (uint256) {
         return s_tslThreshold;
     }

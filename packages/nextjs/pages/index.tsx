@@ -1,9 +1,34 @@
 import Link from "next/link";
 import type { NextPage } from "next";
-import { BugAntIcon, MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { MetaHeader } from "~~/components/MetaHeader";
+import { useScaffoldContractRead, useScaffoldContractWrite } from "~~/hooks/scaffold-eth";
+import { Address } from "~~/components/scaffold-eth";
+import { useEffect, useState } from "react";
+import { useAccount } from "wagmi";
+import { getERC20Balance, getStablecoinBalance, getTSLThreshold, isTSLActive, getERC20TokenAddress, getStablecoinAddress, getUniswapRouterAddress, getPriceFeedAddress, getTrailAmount } from "~~/hooks/scaffold-eth/readTrailMixHooks.js";
+import { depositHook } from "~~/hooks/scaffold-eth/writeContractHooks.js";
 
 const Home: NextPage = () => {
+  const { address } = useAccount();
+
+  const activeTSL = isTSLActive();
+  const ERC20TokenAddress = getERC20TokenAddress();
+  const stablecoinAddress = getStablecoinAddress();
+  const uniswapRouterAddress = getUniswapRouterAddress();
+  const priceFeedAddress = getPriceFeedAddress();
+  const trailAmount = getTrailAmount();
+  const ERC20Balance = getERC20Balance();
+  const stablecoinBalance = getStablecoinBalance();
+  const deposit = depositHook();
+  // make state that can be set via input from user: input deposit amount
+  // change contract so that it doesn't take a threshold
+
+  // const { data: userContracts } = useScaffoldContractRead({
+  //   contractName: "TrailMixManager",
+  //   functionName: "getUserContracts",
+  //   args: [address],
+  // });
+
   return (
     <>
       <MetaHeader />
@@ -11,51 +36,49 @@ const Home: NextPage = () => {
         <div className="px-5">
           <h1 className="text-center mb-8">
             <span className="block text-2xl mb-2">Welcome to</span>
-            <span className="block text-4xl font-bold">Scaffold-ETH 2</span>
+            <span className="block text-4xl font-bold">TrailMix</span>
           </h1>
-          <p className="text-center text-lg">
-            Get started by editing{" "}
-            <code className="italic bg-base-300 text-base font-bold max-w-full break-words break-all inline-block">
-              packages/nextjs/pages/index.tsx
-            </code>
-          </p>
-          <p className="text-center text-lg">
-            Edit your smart contract{" "}
-            <code className="italic bg-base-300 text-base font-bold max-w-full break-words break-all inline-block">
-              YourContract.sol
-            </code>{" "}
-            in{" "}
-            <code className="italic bg-base-300 text-base font-bold max-w-full break-words break-all inline-block">
-              packages/hardhat/contracts
-            </code>
-          </p>
-        </div>
 
-        <div className="flex-grow bg-base-300 w-full mt-16 px-8 py-12">
-          <div className="flex justify-center items-center gap-12 flex-col sm:flex-row">
-            <div className="flex flex-col bg-base-100 px-10 py-10 text-center items-center max-w-xs rounded-3xl">
-              <BugAntIcon className="h-8 w-8 fill-secondary" />
-              <p>
-                Tinker with your smart contract using the{" "}
-                <Link href="/debug" passHref className="link">
-                  Debug Contract
-                </Link>{" "}
-                tab.
-              </p>
-            </div>
-            <div className="flex flex-col bg-base-100 px-10 py-10 text-center items-center max-w-xs rounded-3xl">
-              <MagnifyingGlassIcon className="h-8 w-8 fill-secondary" />
-              <p>
-                Explore your local transactions with the{" "}
-                <Link href="/blockexplorer" passHref className="link">
-                  Block Explorer
-                </Link>{" "}
-                tab.
-              </p>
-            </div>
+
+          <h3 className="text-center mb-2">Connected to</h3>
+          <Address address={address} />
+
+          <div className="text-center mb-2">
+            <p>Active TSL: {activeTSL ? "Yes" : "No"}</p>
           </div>
+
+          {!activeTSL && (
+            <div>
+              <button className="btn btn-primary" onClick={() =>
+                deposit({ args: [BigInt(10), BigInt(10)] }) //change to use input value state
+              }> Create Stop Loss</button>
+
+            </div>
+          )}
+
+
+          {/* Renders details for active trailing stop loss  */}
+          {activeTSL && (
+            <div>
+              <div className="text-center mb-2">
+                <h2 className="text-center mb-2"> Trailing Stop Loss Details</h2>
+                <p> ERC20 Balance: {ERC20Balance?.toString()} </p>
+                <p> Stablecoin Balance: {stablecoinBalance?.toString()} </p>
+                <p> Trailing percent: {trailAmount?.toString()} </p>
+
+
+                <h3 className="text-center mb-2"> Token Info</h3>
+                <p> ERC20 Token Address: {ERC20TokenAddress}</p>
+                <p> Stablecoin Address: {stablecoinAddress}</p>
+                <p> Uniswap Router Address: {uniswapRouterAddress}</p>
+                <p> Chainlink Price Feed Address: {priceFeedAddress}</p>
+              </div>
+            </div>
+          )}
+
+
         </div>
-      </div>
+      </div >
     </>
   );
 };

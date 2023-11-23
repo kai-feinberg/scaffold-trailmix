@@ -31,8 +31,6 @@ contract DeployScript is ScaffoldETHDeploy {
         console.log("deploying with account ", vm.addr(deployerPrivateKey));
         console.log("tx.origin", tx.origin);
 
-
-
         // TrailMix yourContract = new TrailMix(
         //     USER, // owner
         //     erc20Token,
@@ -42,7 +40,7 @@ contract DeployScript is ScaffoldETHDeploy {
         //     10 //trail percent
         // );
         TrailMix yourContract = new TrailMix(
-            USER, // owner
+            vm.addr(deployerPrivateKey), // owner
             0x779877A7B0D9E8603169DdbD7836e478b4624789,
             0x94a9D9AC8a22534E3FaCa9F4e7F2E2cf85d5E4C8,
             0xc59E3633BAAC79493d908e63626716e204A45EdF,
