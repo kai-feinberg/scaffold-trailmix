@@ -1,7 +1,7 @@
 import Link from "next/link";
 import type { NextPage } from "next";
 import { MetaHeader } from "~~/components/MetaHeader";
-import { TrailMixComponent } from "~~/components/trailMixComponent";
+import TrailMixComponent from "~~/components/TrailMixComponent";
 import { useScaffoldContractRead, useScaffoldContractWrite } from "~~/hooks/scaffold-eth";
 import { Address } from "~~/components/scaffold-eth";
 import { ReactNode, useEffect, useState } from "react";
@@ -71,7 +71,10 @@ const Home: NextPage = () => {
 
           {userContracts && userContracts.map((contractAddr, index) => (
             <div key={contractAddr}>
-              <TrailMixComponent contractAddr={contractAddr} />
+              <TrailMixComponent
+                contractAddr={contractAddr}
+                userAddress={address ?? ''}
+              />
             </div>
           ))}
 
