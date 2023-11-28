@@ -48,7 +48,9 @@ const Home: NextPage = () => {
   const { writeAsync: deployTrailMix, } = useScaffoldContractWrite({
     contractName: "TrailMixManager",
     functionName: "deployTrailMix",
-    args: ["0x779877A7B0D9E8603169DdbD7836e478b4624789", "0x94a9D9AC8a22534E3FaCa9F4e7F2E2cf85d5E4C8", "0xc59E3633BAAC79493d908e63626716e204A45EdF", "0xC532a74256D3Db42D0Bf7a0400fEFDbad7694008", BigInt(10)],
+    // args: ["0x779877A7B0D9E8603169DdbD7836e478b4624789", "0x94a9D9AC8a22534E3FaCa9F4e7F2E2cf85d5E4C8", "0xc59E3633BAAC79493d908e63626716e204A45EdF", "0xC532a74256D3Db42D0Bf7a0400fEFDbad7694008", BigInt(10)],
+    args: ["0x779877A7B0D9E8603169DdbD7836e478b4624789", "0x94a9D9AC8a22534E3FaCa9F4e7F2E2cf85d5E4C8", "0x4f58B79AD49bc6621657DdCB6C4846cdE98dA698", "0xC532a74256D3Db42D0Bf7a0400fEFDbad7694008", BigInt(10)],
+
     // The callback function to execute when the transaction is confirmed.
   });
 
