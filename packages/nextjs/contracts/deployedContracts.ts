@@ -61,6 +61,11 @@ const deployedContracts = {
               name: "_trailAmount",
               type: "uint256",
             },
+            {
+              internalType: "uint256",
+              name: "_granularity",
+              type: "uint256",
+            },
           ],
           name: "deployTrailMix",
           outputs: [],
@@ -115,7 +120,7 @@ const deployedContracts = {
   },
   80001: {
     TrailMixManager: {
-      address: "0x8086b130bd12840CB4fe1D014E45e2a92D7610fa",
+      address: "0xFC570749B3DBAE786506c09b2Dd8bCE63c0dEede",
       abi: [
         {
           anonymous: false,
@@ -167,6 +172,11 @@ const deployedContracts = {
             {
               internalType: "uint256",
               name: "_trailAmount",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "_granularity",
               type: "uint256",
             },
           ],
@@ -275,6 +285,11 @@ const deployedContracts = {
             {
               internalType: "uint256",
               name: "_trailAmount",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "_granularity",
               type: "uint256",
             },
           ],

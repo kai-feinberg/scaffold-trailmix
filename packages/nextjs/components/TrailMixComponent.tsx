@@ -80,7 +80,6 @@ const TrailMixComponent: React.FC<TrailMixComponentProps> = ({ contractAddr, use
         functionName: "getTSLThreshold",
     });
 
-
     // Check if the allowance is sufficient
     const { data: allowance } = useContractRead({
         address: String(erc20Address),
@@ -131,15 +130,35 @@ const TrailMixComponent: React.FC<TrailMixComponentProps> = ({ contractAddr, use
 
     const handleApprovalAndDeposit = async () => {
         // Convert depositAmount to a BigInt or similar, depending on how your contract expects it
-        if (String(allowance) < depositAmount) {
+        if (BigInt(allowance as string) < BigInt(scaledDepositAmount)) {
             // If allowance is insufficient, first approve the contract
             if (!approve) return; // `approve` is the function returned by `useContractWrite`
             const approveTx = await approve();
-        }
 
+                // Wait for the approval transaction to complete
+            while(approveLoading) {
+                // Optionally, add a delay to avoid a tight loop
+                await new Promise(resolve => setTimeout(resolve, 1000)); // Wait for 1 second
+            }
+
+            // Check if the approval was successful
+            if (!approveSuccess) {
+                // Handle the case where the approval was not successful
+                console.error('Approval failed');
+                return;
+            }
+        }
+        
+        // Proceed to deposit if the current allowance is sufficient or if approval was successful
+        if (approveSuccess || BigInt(allowance as string) >= scaledDepositAmount) {
+            if (!deposit) return; // `deposit` is the function returned by `useContractWrite`
+
+        // Perform the deposit
+            await deposit();
         // Once the allowance is set, deposit the tokens
-        if (!deposit) return; // `deposit` is the function returned by `useContractWrite`
-        const depositTx = await deposit(); // Replace BigInt(10) with the actual threshold value
+        // if (!deposit) return; // `deposit` is the function returned by `useContractWrite`
+        // const depositTx = await deposit();
+        }
     };
 
     // Handle loading and error states
@@ -155,7 +174,8 @@ const TrailMixComponent: React.FC<TrailMixComponentProps> = ({ contractAddr, use
         const trailAmountNumber = Number(trailAmount);
         const thresholdNumber = Number(tslThreshold);
 
-        const divisor = Math.pow(10, tokenDecimalsNumber);
+        // const divisor = Math.pow(10, tokenDecimalsNumber);
+        const divisor = 1
         const nextUpdatePrice = (thresholdNumber / divisor) * (100 / (100 - trailAmountNumber)) * 1.01;
         return nextUpdatePrice.toString();
     };
@@ -167,7 +187,7 @@ const TrailMixComponent: React.FC<TrailMixComponentProps> = ({ contractAddr, use
                 <div>
                     <Address address={contractAddr} />
                     <p>Stop Loss State: {isTSLActive ? 'Active' : 'Inactive'}</p>
-                    <p>Threshold: {tslThreshold ? String(Number(tslThreshold) / Math.pow(10, tokenDecimals as number)) : 'N/A'}</p>
+                    <p>Threshold: {tslThreshold ? String(Number(tslThreshold)) : 'N/A'}</p>
                     <p>Next update price: {calculateNextUpdatePrice()}</p>
 
                     <p>Price Feed Address: {priceFeedAddress ? String(priceFeedAddress) : 'Loading...'}</p>

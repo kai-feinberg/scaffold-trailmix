@@ -24,7 +24,9 @@ contract TrailMix is AutomationCompatibleInterface, ReentrancyGuard {
     uint256 private s_tslThreshold; // User's TSL threshold
     uint256 private s_erc20Balance;
     uint256 private s_stablecoinBalance; // User's ERC20 token balance
+    uint256 private s_granularity; //  % price increase to trigger an update 
     bool private s_isTSLActive; // Indicates if the TSL is currently active
+    bool private slippageProtection; // Indicates if slippage protection is enabled
 
     event Deposit(address indexed user, uint256 amount);
     event Withdraw(address indexed user, uint256 amount);
@@ -37,7 +39,8 @@ contract TrailMix is AutomationCompatibleInterface, ReentrancyGuard {
         address _stablecoin,
         address _priceFeed,
         address _uniswapRouter,
-        uint256 _trailAmount
+        uint256 _trailAmount,
+        uint256 granularity
     ) {
         i_owner = _owner;
         s_erc20Token = _erc20Token;
@@ -46,6 +49,8 @@ contract TrailMix is AutomationCompatibleInterface, ReentrancyGuard {
         s_uniswapRouter = ISwapRouter(_uniswapRouter);
         s_isTSLActive = false;
         s_trailAmount = _trailAmount;
+        slippageProtection = false;
+        s_granularity = granularity;
     }
 
     modifier onlyOwner() {
@@ -133,8 +138,12 @@ contract TrailMix is AutomationCompatibleInterface, ReentrancyGuard {
         //swap ERC20 tokens for stablecoin on uniswap
         //need to approve uniswap to spend ERC20 tokens
         uint256 currentPrice = getLatestPrice();
-
-        uint256 minAmountOut = (amount * currentPrice * 98) / 100; //98% of the current price
+        uint256 minAmountOut;
+        if (slippageProtection) {
+            minAmountOut = (amount * currentPrice * 98) / 100; //98% of the current price
+        } else {
+            minAmountOut = 0;
+        }
 
         IERC20(s_erc20Token).approve(address(s_uniswapRouter), amount);
 
@@ -147,7 +156,7 @@ contract TrailMix is AutomationCompatibleInterface, ReentrancyGuard {
                 recipient: address(this),
                 deadline: block.timestamp,
                 amountIn: amount,
-                amountOutMinimum: 0,
+                amountOutMinimum: minAmountOut,
                 sqrtPriceLimitX96: 0
             });
         s_uniswapRouter.exactInputSingle(params);
@@ -181,7 +190,7 @@ contract TrailMix is AutomationCompatibleInterface, ReentrancyGuard {
             (100 - s_trailAmount);
 
         //determines the price that is 1% higher than the old stored price
-        uint256 onePercentHigher = (oldCurrentPrice * 101) / 100;
+        uint256 onePercentHigher = (oldCurrentPrice * (100+s_granularity)) / 100;
         //if new price is less than the current threshold then trigger TSL
         if (currentPrice < s_tslThreshold) {
             //trigger TSL
@@ -202,6 +211,9 @@ contract TrailMix is AutomationCompatibleInterface, ReentrancyGuard {
             .decode(performData, (bool, bool, uint256));
         if (triggerSell) {
             swapToStablecoin(s_erc20Balance);
+
+            //deactivate TSL
+            s_isTSLActive = false;
             //call trigger function to sell on uniswap
         } else if (updateThreshold) {
             //call updateThreshold function to update the threshold
@@ -252,5 +264,8 @@ contract TrailMix is AutomationCompatibleInterface, ReentrancyGuard {
 
     function getOwner() public view returns (address) {
         return i_owner;
+    }
+    function activateSlippageProtection() public onlyOwner {
+        slippageProtection = true;
     }
 }

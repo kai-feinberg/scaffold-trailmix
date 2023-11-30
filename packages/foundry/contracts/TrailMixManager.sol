@@ -20,7 +20,8 @@ contract TrailMixManager {
         address _stablecoin,
         address _priceFeed,
         address _uniswapRouter,
-        uint256 _trailAmount
+        uint256 _trailAmount,
+        uint256 _granularity
     ) public {
         // Deploy the TrailMix contract
         TrailMix newTrailMix = new TrailMix(
@@ -29,7 +30,8 @@ contract TrailMixManager {
             _stablecoin,
             _priceFeed,
             _uniswapRouter,
-            _trailAmount
+            _trailAmount,
+            _granularity
         );
 
         // Store the contract address in the userContracts mapping

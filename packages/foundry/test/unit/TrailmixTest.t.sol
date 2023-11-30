@@ -441,7 +441,8 @@ contract TrailMixManagerTest is StdCheats, Test {
             0x94a9D9AC8a22534E3FaCa9F4e7F2E2cf85d5E4C8,
             0xc59E3633BAAC79493d908e63626716e204A45EdF,
             0xC532a74256D3Db42D0Bf7a0400fEFDbad7694008,
-            10
+            10,
+            1
         );
     }
 }

@@ -25,7 +25,8 @@ contract DeployTrailMix is Script {
             stablecoin,
             router,
             priceFeed,
-            trailPercent
+            trailPercent,
+            1
         );
         vm.stopBroadcast();
         return (trailMix, helperConfig);
