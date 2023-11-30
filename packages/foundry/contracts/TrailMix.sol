@@ -129,20 +129,14 @@ contract TrailMix is AutomationCompatibleInterface, ReentrancyGuard {
         return uint256(price) * (10 ** (18 - decimals)); //standardizes price to 18 decimals
     }
 
-    function swapToStablecoin(uint256 amount) private nonReentrant {
+    function swapToStablecoin(uint256 amount) public nonReentrant {
         //swap ERC20 tokens for stablecoin on uniswap
         //need to approve uniswap to spend ERC20 tokens
         uint256 currentPrice = getLatestPrice();
 
-        uint256 minAmoutOut = (amount * currentPrice * 98) / 100; //98% of the current price
+        uint256 minAmountOut = (amount * currentPrice * 98) / 100; //98% of the current price
 
         IERC20(s_erc20Token).approve(address(s_uniswapRouter), amount);
-        TransferHelper.safeTransferFrom(
-            s_erc20Token,
-            msg.sender,
-            address(this),
-            amount
-        );
 
         s_erc20Balance -= amount;
         ISwapRouter.ExactInputSingleParams memory params = ISwapRouter
@@ -153,7 +147,7 @@ contract TrailMix is AutomationCompatibleInterface, ReentrancyGuard {
                 recipient: address(this),
                 deadline: block.timestamp,
                 amountIn: amount,
-                amountOutMinimum: minAmoutOut,
+                amountOutMinimum: 0,
                 sqrtPriceLimitX96: 0
             });
         s_uniswapRouter.exactInputSingle(params);

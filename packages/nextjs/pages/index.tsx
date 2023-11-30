@@ -7,31 +7,7 @@ import { Address } from "~~/components/scaffold-eth";
 import { ReactNode, useEffect, useState } from "react";
 import { useAccount, useContractRead } from "wagmi";
 import { getERC20Balance } from "~~/hooks/scaffold-eth/readTrailMixHooks.js";
-// import tmABI from "/home/kaifeinberg/foundry-f23/scaffold-trailmix/packages/foundry/out/TrailMix.sol/TrailMix.json";
-// const trailMixAbi = tmABI["abi"]; 
-// const ContractItem = ({ contractAddr } : { contractAddr: string }) => {
-//   const { data: isTSLActive, isLoading, error } = useContractRead({
-//     address: contractAddr,
-//     abi: trailMixAbi,
-//     functionName: "isTSLActive",
-//   });
 
-//   const { data: priceFeedAddress} = useContractRead({
-//     address: contractAddr,
-//     abi: trailMixAbi,
-//     functionName: "getPriceFeedAddress",
-//   }); 
-
-//   if (isLoading) return <p>Loading...</p>;
-//   if (error) return <p>Error: {error.message}</p>;
-
-//   return (
-//     <div>
-//       <p><Address address={contractAddr} /> ERC20 balance: {isTSLActive ? 'Active' : 'Inactive'}</p>
-//       <p>Price Feed Address: {priceFeedAddress as ReactNode}</p>
-//     </div>
-//   );
-// };
 
 const Home: NextPage = () => {
   const { address } = useAccount();
@@ -49,7 +25,7 @@ const Home: NextPage = () => {
     contractName: "TrailMixManager",
     functionName: "deployTrailMix",
     // args: ["0x779877A7B0D9E8603169DdbD7836e478b4624789", "0x94a9D9AC8a22534E3FaCa9F4e7F2E2cf85d5E4C8", "0xc59E3633BAAC79493d908e63626716e204A45EdF", "0xC532a74256D3Db42D0Bf7a0400fEFDbad7694008", BigInt(10)],
-    args: ["0x779877A7B0D9E8603169DdbD7836e478b4624789", "0x94a9D9AC8a22534E3FaCa9F4e7F2E2cf85d5E4C8", "0x4f58B79AD49bc6621657DdCB6C4846cdE98dA698", "0xC532a74256D3Db42D0Bf7a0400fEFDbad7694008", BigInt(10)],
+    args: ["0x9c3c9283d3e44854697cd22d3faa240cfb032889", "0x0FA8781a83E46826621b3BC094Ea2A0212e71B23", "0xd0D5e3DB44DE05E9F294BB0a3bEEaF030DE24Ada", "0xE592427A0AEce92De3Edee1F18E0157C05861564", BigInt(10)],
 
     // The callback function to execute when the transaction is confirmed.
   });
@@ -68,7 +44,6 @@ const Home: NextPage = () => {
 
           <h3 className="text-center mb-2">Connected to</h3>
           <Address address={address} />
-          <h3 className="text-center mb-2">Your Contracts: {userContracts}</h3>
 
 
           {userContracts && userContracts.map((contractAddr, index) => (

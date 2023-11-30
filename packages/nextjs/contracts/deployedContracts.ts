@@ -113,6 +113,114 @@ const deployedContracts = {
       ],
     },
   },
+  80001: {
+    TrailMixManager: {
+      address: "0x8086b130bd12840CB4fe1D014E45e2a92D7610fa",
+      abi: [
+        {
+          anonymous: false,
+          inputs: [
+            {
+              indexed: true,
+              internalType: "address",
+              name: "user",
+              type: "address",
+            },
+            {
+              indexed: false,
+              internalType: "address",
+              name: "contractAddress",
+              type: "address",
+            },
+            {
+              indexed: false,
+              internalType: "uint256",
+              name: "timestamp",
+              type: "uint256",
+            },
+          ],
+          name: "ContractDeployed",
+          type: "event",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "_erc20Token",
+              type: "address",
+            },
+            {
+              internalType: "address",
+              name: "_stablecoin",
+              type: "address",
+            },
+            {
+              internalType: "address",
+              name: "_priceFeed",
+              type: "address",
+            },
+            {
+              internalType: "address",
+              name: "_uniswapRouter",
+              type: "address",
+            },
+            {
+              internalType: "uint256",
+              name: "_trailAmount",
+              type: "uint256",
+            },
+          ],
+          name: "deployTrailMix",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "user",
+              type: "address",
+            },
+          ],
+          name: "getUserContracts",
+          outputs: [
+            {
+              internalType: "address[]",
+              name: "",
+              type: "address[]",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "",
+              type: "address",
+            },
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          name: "userContracts",
+          outputs: [
+            {
+              internalType: "address",
+              name: "",
+              type: "address",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+      ],
+    },
+  },
   11155111: {
     TrailMixManager: {
       address: "0x871d9adBc69c200802A2FC645598045840c3c63F",
