@@ -16,7 +16,7 @@ type TrailMixComponentProps = {
 
 const TrailMixComponent: React.FC<TrailMixComponentProps> = ({ contractAddr, userAddress }) => {
     const [depositAmount, setDepositAmount] = useState<string | bigint>(""); // State to store deposit amount
-
+    
     const { data: erc20Address, isLoading: isLoadingErc20Address, error: errorErc20Address } = useContractRead({
         address: contractAddr,
         abi: trailMixAbi,
@@ -36,6 +36,7 @@ const TrailMixComponent: React.FC<TrailMixComponentProps> = ({ contractAddr, use
     })
 
     const dec = Math.pow(10, tokenDecimals as number)
+
     // const setScaledDepositAmount = (newValue: string | bigint) => {
     //     const userInput = Number(newValue);
     //     setDepositAmount((Number(userInput) * dec).toString())
@@ -45,6 +46,12 @@ const TrailMixComponent: React.FC<TrailMixComponentProps> = ({ contractAddr, use
     if (!contractAddr) {
         return <p>No contract address provided.</p>;
     }
+
+    const { data: latestPrice, isLoading: isLoadingPrice, error: errorPrice } = useContractRead({
+        address: contractAddr,
+        abi: trailMixAbi,
+        functionName: "getLatestPrice",
+    });
 
     const { data: isTSLActive, isLoading: isLoadingActive, error: errorActive } = useContractRead({
         address: contractAddr,
@@ -71,9 +78,6 @@ const TrailMixComponent: React.FC<TrailMixComponentProps> = ({ contractAddr, use
         functionName: "getStablecoinBalance",
     });
 
-
-
-
     const { data: tslThreshold, isLoading: isLoadingTslThreshold, error: errorTSL } = useContractRead({
         address: contractAddr,
         abi: trailMixAbi,
@@ -99,7 +103,7 @@ const TrailMixComponent: React.FC<TrailMixComponentProps> = ({ contractAddr, use
         address: contractAddr,
         abi: trailMixAbi,
         functionName: 'deposit',
-        args: [scaledDepositAmount, BigInt(10)], //make dynamic state vars
+        args: [scaledDepositAmount, latestPrice], //make dynamic state vars
     })
     const { data: depositResult, isLoading, isSuccess, write: deposit } = useContractWrite(depositConfig);
 
@@ -123,7 +127,7 @@ const TrailMixComponent: React.FC<TrailMixComponentProps> = ({ contractAddr, use
         address: contractAddr,
         abi: trailMixAbi,
         functionName: 'swapToStablecoin',
-        args: [BigInt(1000000000)],
+        args: [BigInt(10000000000)],
     })
 
     const { data: swapResult, isLoading: swapLoading, isSuccess: swapSuccess, write: swap } = useContractWrite(swapConfig);
@@ -173,10 +177,8 @@ const TrailMixComponent: React.FC<TrailMixComponentProps> = ({ contractAddr, use
         const tokenDecimalsNumber = Number(tokenDecimals);
         const trailAmountNumber = Number(trailAmount);
         const thresholdNumber = Number(tslThreshold);
-
-        // const divisor = Math.pow(10, tokenDecimalsNumber);
-        const divisor = 1
-        const nextUpdatePrice = (thresholdNumber / divisor) * (100 / (100 - trailAmountNumber)) * 1.01;
+                // const divisor = 1
+        const nextUpdatePrice = (thresholdNumber / dec) * (100 / (100 - trailAmountNumber)) * 1.01;
         return nextUpdatePrice.toString();
     };
 
@@ -187,19 +189,22 @@ const TrailMixComponent: React.FC<TrailMixComponentProps> = ({ contractAddr, use
                 <div>
                     <Address address={contractAddr} />
                     <p>Stop Loss State: {isTSLActive ? 'Active' : 'Inactive'}</p>
-                    <p>Threshold: {tslThreshold ? String(Number(tslThreshold)) : 'N/A'}</p>
+                    <p>Threshold: {tslThreshold ? String(Number(tslThreshold)/dec) : 'N/A'}</p>
                     <p>Next update price: {calculateNextUpdatePrice()}</p>
 
+                    <p>Token Pair: WMATIC/USDC </p>
                     <p>Price Feed Address: {priceFeedAddress ? String(priceFeedAddress) : 'Loading...'}</p>
                     <p>ERC20 Balance: {erc20Balance ? (Number(erc20Balance) / Math.pow(10, tokenDecimals as number)).toString() : '0'}</p>
                     <p> Stablecoin Balance: {stablecoinBalance ? String(stablecoinBalance) : '0'}</p>
 
-                    <p>ERC20 Address: {erc20Address ? String(erc20Address) : 'Loading...'}</p>
-                    <p>Stablecoin Address: {stablecoinAddress ? String(stablecoinAddress) : 'Loading...'}</p>
+                    {/* <p>ERC20 Address: {erc20Address ? String(erc20Address) : 'Loading...'}</p>
+                    <p>Stablecoin Address: {stablecoinAddress ? String(stablecoinAddress) : 'Loading...'}</p> */}
                     <IntegerInput value={depositAmount} onChange={setDepositAmount} />
-                    <p>Allowance: {allowance ? String(allowance) : '0'}</p>
+                   
+                    {/* <p>Allowance: {allowance ? String(allowance) : '0'}</p>
                     <p> dec: {Number(tokenDecimals)}</p>
-                    <p>Deposit Amount: {depositAmount ? (Number(depositAmount)).toString() : '0'}</p>
+                    <p>Deposit Amount: {depositAmount ? (Number(depositAmount)).toString() : '0'}</p> */}
+                    
                     <button className="btn btn-primary" onClick={handleApprovalAndDeposit}>Deposit</button>
                     <button className="btn btn-primary" onClick={withdraw}>Withdraw</button>
                     <button className="btn btn-primary" onClick={swap}>Swap</button>
