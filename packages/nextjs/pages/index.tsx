@@ -7,6 +7,7 @@ import { Address } from "~~/components/scaffold-eth";
 import { ReactNode, useEffect, useState } from "react";
 import { useAccount, useContractRead } from "wagmi";
 import { getERC20Balance } from "~~/hooks/scaffold-eth/readTrailMixHooks.js";
+import DeployNewComponent from "~~/components/DeployNew";
 
 
 const Home: NextPage = () => {
@@ -42,11 +43,13 @@ const Home: NextPage = () => {
           </h1>
 
 
-          <h3 className="text-center mb-2">Connected to</h3>
-          <Address address={address} />
+          <h3 className="text-center mb-2">Connected to
+            <Address address={address} />
+          </h3>
 
+          <DeployNewComponent />
 
-          {userContracts && userContracts.map((contractAddr, index) => (
+          {userContracts && [...userContracts].reverse().map((contractAddr, index) => (
             <div key={contractAddr}>
               <TrailMixComponent
                 contractAddr={contractAddr}
@@ -55,9 +58,10 @@ const Home: NextPage = () => {
             </div>
           ))}
 
-          <button className="btn btn-primary" onClick={() => deployTrailMix()}>
+
+          {/* <button className="btn btn-primary" onClick={() => deployTrailMix()}>
             Deploy TrailMix
-          </button>
+          </button> */}
 
 
 

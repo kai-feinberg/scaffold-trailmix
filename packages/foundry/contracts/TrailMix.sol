@@ -268,4 +268,8 @@ contract TrailMix is AutomationCompatibleInterface, ReentrancyGuard {
     function activateSlippageProtection() public onlyOwner {
         slippageProtection = true;
     }
+
+    function getGranularity() public view returns (uint256) {
+        return s_granularity;
+    }
 }
