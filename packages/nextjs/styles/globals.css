@@ -4,10 +4,9 @@
 
 :root,
 [data-theme] {
-  /* background: hsl(var(--b2)); */
-  background: #1b013c; /* Purple */
+  background: hsl(var(--b2));
+  /* background: #fdba74; Purple */
 }
-
 body {
   min-height: 100vh;
 }

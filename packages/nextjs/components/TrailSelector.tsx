@@ -16,8 +16,8 @@ const TrailSelector: React.FC<TrailSelectorProps> = ({ onTrailSelected }) => {
   };
 
   return (
-    <div className="p-2">
-      <h2 className="text-sm mb-1">Select Trail Amount</h2>
+    <div className="p-2 ">
+      <h2 className="text-sm mb-1 text-center">Select Trail </h2>
       <div className="flex space-x-2">
         {trails.map((trail) => (
           <button

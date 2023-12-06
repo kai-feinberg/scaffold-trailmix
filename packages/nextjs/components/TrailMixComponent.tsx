@@ -94,7 +94,7 @@ const TrailMixComponent: React.FC<TrailMixComponentProps> = ({ contractAddr, use
         functionName: 'getTrailAmount',
     });
 
-    const {data: granularity} = useContractRead({
+    const { data: granularity } = useContractRead({
         address: contractAddr,
         abi: trailMixAbi,
         functionName: 'getGranularity',
@@ -186,36 +186,38 @@ const TrailMixComponent: React.FC<TrailMixComponentProps> = ({ contractAddr, use
 
 
     return (
-        <div>
+        <div className="bg-zinc-900 rounded-3xl mt-4 p-2 flex flex-col items-center justify-center">
             {/* {isTSLActive ? */}
-            <div>
-                <div className="mt-10 mb-5">
-                    <Address address={contractAddr} />
-                </div>
+            <div className="mt-10 mb-5">
+                <Address address={contractAddr} />
+            </div>
 
-                <h1><b> <u>WMATIC/USDC: {trailAmount ? String(trailAmount) : 'Loading'}% trail </u></b></h1>
-                <p>Status: {isTSLActive ? 'Active' : 'Inactive'}</p>
+            <h1><b> <u>WMATIC/USDC: {trailAmount ? String(trailAmount) : 'Loading'}% trail ({isTSLActive ? 'Active' : 'Inactive'})</u></b></h1>
 
-                <p>Threshold: {tslThreshold ? String(Number(tslThreshold) / dec) : 'N/A'},
-                    Next update price: {calculateNextUpdatePrice()}</p>
+            <p>Threshold: {tslThreshold ? String(Number(tslThreshold) / dec) : 'N/A'},
+                Next update price: {calculateNextUpdatePrice()}</p>
 
-                <p>Price Feed Address: {priceFeedAddress ? String(priceFeedAddress) : 'Loading...'}</p>
-                <p>ERC20 Balance: {erc20Balance ? (Number(erc20Balance) / Math.pow(10, tokenDecimals as number)).toString() : '0'}</p>
-                <p> Stablecoin Balance: {stablecoinBalance ? String(stablecoinBalance) : '0'}</p>
+            {/* <p>Price Feed Address: {priceFeedAddress ? String(priceFeedAddress) : 'Loading...'}</p> */}
+            <p>ERC20 Balance: {erc20Balance ? (Number(erc20Balance) / Math.pow(10, tokenDecimals as number)).toString() : '0'}</p>
+            <p> Stablecoin Balance: {stablecoinBalance ? String(stablecoinBalance) : '0'}</p>
 
-                {/* <p>ERC20 Address: {erc20Address ? String(erc20Address) : 'Loading...'}</p>
+            {/* <p>ERC20 Address: {erc20Address ? String(erc20Address) : 'Loading...'}</p>
                     <p>Stablecoin Address: {stablecoinAddress ? String(stablecoinAddress) : 'Loading...'}</p> */}
-                
-                <IntegerInput value={depositAmount} onChange={setDepositAmount} />
-
-                {/* <p>Allowance: {allowance ? String(allowance) : '0'}</p>
+            {/* <p>Allowance: {allowance ? String(allowance) : '0'}</p>
                     <p> dec: {Number(tokenDecimals)}</p>
                     <p>Deposit Amount: {depositAmount ? (Number(depositAmount)).toString() : '0'}</p> */}
 
+            <div className="flex justify-center">
+                <div className="w-1/3">
+                    <IntegerInput value={depositAmount} onChange={setDepositAmount} />
+                </div>
                 <button className="btn btn-primary" onClick={handleApprovalAndDeposit}>Deposit</button>
-                <button className="btn btn-primary" onClick={withdraw}>Withdraw</button>
-                <button className="btn btn-primary" onClick={swap}>Swap</button>
             </div>
+
+            <div className="mb-4">
+                <button className="btn btn-primary" onClick={withdraw}>Withdraw</button>
+            </div>
+            {/* <button className="btn btn-primary" onClick={swap}>Swap</button> */}
             {/* : ''} */}
         </div>
     );

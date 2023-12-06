@@ -37,27 +37,34 @@ const Home: NextPage = () => {
       <MetaHeader />
       <div className="flex items-center flex-col flex-grow pt-10">
         <div className="px-5">
-          <h1 className="text-center mb-8">
-            <span className="block text-2xl mb-2">Welcome to</span>
-            <span className="block text-4xl font-bold">TrailMix</span>
-          </h1>
+          <div className="flex items-center justify-center border-b">
+            <img src="tm.png" alt="TrailMix Logo" className="w-40 mb-8" />
+            <h1 className="text-center mb-8">
+              <span className="block text-2xl mb-2">Welcome to</span>
+              <span className="block text-4xl font-bold">TrailMix!</span>
+            </h1>
+          </div>
 
-
-          <h3 className="text-center mb-2">Connected to
+          <p className="text-center mb-8 text-xl">
+            Trailmix is a decentralized trailing stop loss protocol for ERC20 tokens.
+          </p>
+          {/* <h3 className="text-center mb-2 f">Connected to
             <Address address={address} />
-          </h3>
+          </h3> */}
 
           <DeployNewComponent />
 
-          {userContracts && [...userContracts].reverse().map((contractAddr, index) => (
-            <div key={contractAddr}>
-              <TrailMixComponent
-                contractAddr={contractAddr}
-                userAddress={address ?? ''}
-              />
-            </div>
-          ))}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 
+            {userContracts && [...userContracts].reverse().map((contractAddr, index) => (
+              <div key={contractAddr}>
+                <TrailMixComponent
+                  contractAddr={contractAddr}
+                  userAddress={address ?? ''}
+                />
+              </div>
+            ))}
+          </div>
 
           {/* <button className="btn btn-primary" onClick={() => deployTrailMix()}>
             Deploy TrailMix

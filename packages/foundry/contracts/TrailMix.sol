@@ -189,7 +189,7 @@ contract TrailMix is AutomationCompatibleInterface, ReentrancyGuard {
         uint256 oldCurrentPrice = (s_tslThreshold * 100) /
             (100 - s_trailAmount);
 
-        //determines the price that is 1% higher than the old stored price
+        //determines the price that is granularity% higher than the old stored price
         uint256 onePercentHigher = (oldCurrentPrice * (100+s_granularity)) / 100;
         //if new price is less than the current threshold then trigger TSL
         if (currentPrice < s_tslThreshold) {

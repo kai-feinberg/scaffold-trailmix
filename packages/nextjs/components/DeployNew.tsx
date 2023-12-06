@@ -36,8 +36,9 @@ const DeployNewComponent = () => {
     }
 
     return (
-        <div>
-
+        
+        <div className="box-color rounded-3xl p-2 flex flex-col items-center justify-center">
+            <p className = "block text-2xl font-bold p-4"> Deploy a New Trailing Stop Loss!</p>
             <select
                 className="select select-bordered select-sm w-full max-w-xs"
                 value={erc20Token} // Bind state to the select element
@@ -59,7 +60,7 @@ const DeployNewComponent = () => {
             <TrailSelector onTrailSelected={(trailAmount: bigint) => setTrailAmount(BigInt(trailAmount))} />
             <StepperInput onGranularityChange={(granularity: bigint) => setGranularity(BigInt(granularity))} />
             <div>
-                <button className="btn btn-primary" onClick={() => deployTrailMix()}>
+                <button className="btn btn-primary mb-4" onClick={() => deployTrailMix()}>
                     Deploy TrailMix
                 </button>
             </div>
