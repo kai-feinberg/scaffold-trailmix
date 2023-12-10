@@ -8,6 +8,8 @@ Leveraging Chainlink's reliable price feeds and decentralized automation network
 
 ⚙️ Built using Foundry, ScaffoldEth2, NextJS, RainbowKit, Viem, Wagmi, and Typescript.
 
+
+
 ## Contents
 
 - [Requirements](#requirements)
@@ -22,7 +24,7 @@ Before you begin, you need to install the following tools:
 - Yarn ([v1](https://classic.yarnpkg.com/en/docs/install/) or [v2+](https://yarnpkg.com/getting-started/install))
 - [Git](https://git-scm.com/downloads)
 
-## Quickstart
+## Quickstart (adapted from Scaffold-Eth)
 
 To get started follow the steps below:
 
@@ -112,10 +114,11 @@ function deployTrailMix(
 ```
 
 A couple things to note.
-1. You will have to manually find and pass in the address of the priceFeed from [Chainlink](https://docs.chain.link/data-feeds/price-feeds/addresses?network=ethereum&page=1). 
+1. You will have to manually find and pass in the address of the priceFeed from [Chainlink's deployed price feeds](https://docs.chain.link/data-feeds/price-feeds/addresses?network=ethereum&page=1). 
 
-2.The uniswap router should always just be `0xE592427A0AEce92De3Edee1F18E0157C05861564`.
+2. The uniswap router should always just be `0xE592427A0AEce92De3Edee1F18E0157C05861564`.
 
 3. The ERC20Token and the stablecoin must have a direct pool on Uniswap in order to function. Currently the swap function implemented only does single hop swaps.
 
-4. The granularity argument represents how often the sell threshold updates when above the previous price. Lets say our previous threshold was set when the price was $100 (so our sell threshold is $90). If the price increases to $100.50 it is unnecessary to update as it is only an increase of 0.5%. Granularity adjusts this threshold. A 5% granularity will mean the threshold will update when the price reaches $105 to ensure there is significant price action to warrant the gas fee. When in doubt use 5% (_granularity = 5) 
+4. The `_granularity`` argument represents how often the sell threshold updates when above the previous price. 
+- Lets say our previous threshold was set when the price was $100 (so our sell threshold is $90). If the price increases to $100.50 it is unnecessary to update as it is only an increase of 0.5%. Granularity adjusts this threshold. A 5% granularity will mean the threshold will update when the price reaches $105 to ensure there is significant price action to warrant the gas fee. When in doubt use 5% (_granularity = 5) 
