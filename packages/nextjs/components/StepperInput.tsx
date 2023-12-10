@@ -26,7 +26,7 @@ const StepperInput: React.FC<StepperInputProps> = ({ onGranularityChange }) => {
 
   return (
     <div className="p-4 flex items-center">
-    <h2 className="text-sm mb-1">Select Granularity</h2>
+    <h2 className="text-sm mb-1">Update frequency</h2>
       <button className="btn btn-sm m-1" onClick={decreaseGranularity} disabled={granularity <= 1n}>
         -
       </button>

@@ -24,7 +24,7 @@ contract TrailMix is AutomationCompatibleInterface, ReentrancyGuard {
     uint256 private s_tslThreshold; // User's TSL threshold
     uint256 private s_erc20Balance;
     uint256 private s_stablecoinBalance; // User's ERC20 token balance
-    uint256 private s_granularity; //  % price increase to trigger an update 
+    uint256 private s_granularity; //  % price increase to trigger an update
     bool private s_isTSLActive; // Indicates if the TSL is currently active
     bool private slippageProtection; // Indicates if slippage protection is enabled
 
@@ -58,6 +58,12 @@ contract TrailMix is AutomationCompatibleInterface, ReentrancyGuard {
         _;
     }
 
+    /**
+     * @notice Deposits a specified amount of the ERC20 token into the contract.
+     * @dev Emits a Deposit event on successful deposit.
+     * @param amount The amount of the ERC20 token to deposit.
+     * @param tslThreshold The initial trailing stop loss threshold as a percentage.
+     */
     function deposit(uint256 amount, uint256 tslThreshold) external onlyOwner {
         if (amount <= 0) {
             revert InvalidAmount();
@@ -83,6 +89,10 @@ contract TrailMix is AutomationCompatibleInterface, ReentrancyGuard {
         emit Deposit(msg.sender, amount);
     }
 
+    /**
+     * @notice Withdraws the user's funds from the contract.
+     * @dev Allows withdrawal of either ERC20 tokens or stablecoins, based on TSL status.
+     */
     function withdraw() external onlyOwner {
         uint256 withdrawalAmount;
 
@@ -117,6 +127,11 @@ contract TrailMix is AutomationCompatibleInterface, ReentrancyGuard {
         emit Withdraw(i_owner, withdrawalAmount);
     }
 
+    /**
+     * @notice Updates the trailing stop loss threshold.
+     * @dev This function is private and should be called only by performUpkeep.
+     * @param newThreshold The new threshold value to set.
+     */
     function updateTSLThreshold(uint256 newThreshold) private {
         s_tslThreshold = newThreshold;
         emit TSLUpdated(newThreshold);
@@ -134,6 +149,11 @@ contract TrailMix is AutomationCompatibleInterface, ReentrancyGuard {
         return uint256(price) * (10 ** (18 - decimals)); //standardizes price to 18 decimals
     }
 
+    /**
+     * @notice Swaps the user's ERC20 tokens for stablecoins on Uniswap.
+     * @dev Currently public for testing, but intended to be private in deployment. Non-reentrant.
+     * @param amount The amount of the ERC20 token to swap.
+     */
     function swapToStablecoin(uint256 amount) public nonReentrant {
         //swap ERC20 tokens for stablecoin on uniswap
         //need to approve uniswap to spend ERC20 tokens
@@ -167,6 +187,13 @@ contract TrailMix is AutomationCompatibleInterface, ReentrancyGuard {
         emit SwapExecuted(amount, amountRecieved);
     }
 
+    /**
+     * @notice Checks if upkeep is needed based on TSL conditions.
+     * @dev Part of the Chainlink automation interface.
+     * @param 'checkData' Not used in this implementation.
+     * @return upkeepNeeded Boolean flag indicating if upkeep is needed.
+     * @return performData Encoded data on what action to perform during upkeep.
+     */
     function checkUpkeep(
         bytes calldata /*checkData*/
     )
@@ -190,7 +217,8 @@ contract TrailMix is AutomationCompatibleInterface, ReentrancyGuard {
             (100 - s_trailAmount);
 
         //determines the price that is granularity% higher than the old stored price
-        uint256 onePercentHigher = (oldCurrentPrice * (100+s_granularity)) / 100;
+        uint256 onePercentHigher = (oldCurrentPrice * (100 + s_granularity)) /
+            100;
         //if new price is less than the current threshold then trigger TSL
         if (currentPrice < s_tslThreshold) {
             //trigger TSL
@@ -205,6 +233,11 @@ contract TrailMix is AutomationCompatibleInterface, ReentrancyGuard {
         return (upkeepNeeded, performData);
     }
 
+    /**
+     * @notice Performs the upkeep of updating the stop loss threshold or triggering a sell.
+     * @dev Part of the Chainlink automation interface.
+     * @param performData Encoded data indicating the actions to perform.
+     */
     function performUpkeep(bytes calldata performData) external override {
         // Implement logic to perform TSL (e.g., swap to stablecoin) when conditions are met
         (bool triggerSell, bool updateThreshold, uint256 newThreshold) = abi
@@ -219,6 +252,14 @@ contract TrailMix is AutomationCompatibleInterface, ReentrancyGuard {
             //call updateThreshold function to update the threshold
             updateTSLThreshold(newThreshold);
         }
+    }
+
+    /**
+     * @notice Activates slippage protection for token swaps.
+     * @dev Can only be called by the contract owner.
+     */
+    function activateSlippageProtection() public onlyOwner {
+        slippageProtection = true;
     }
 
     // View functions for contract interaction and frontend integration
@@ -264,9 +305,6 @@ contract TrailMix is AutomationCompatibleInterface, ReentrancyGuard {
 
     function getOwner() public view returns (address) {
         return i_owner;
-    }
-    function activateSlippageProtection() public onlyOwner {
-        slippageProtection = true;
     }
 
     function getGranularity() public view returns (uint256) {

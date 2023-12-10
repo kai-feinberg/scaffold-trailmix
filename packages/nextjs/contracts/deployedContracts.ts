@@ -120,7 +120,7 @@ const deployedContracts = {
   },
   80001: {
     TrailMixManager: {
-      address: "0xFC570749B3DBAE786506c09b2Dd8bCE63c0dEede",
+      address: "0x2cD4ee4866DA2c16CEC02f8d7940ad6D5e56292F",
       abi: [
         {
           anonymous: false,

@@ -100,6 +100,7 @@ const TrailMixComponent: React.FC<TrailMixComponentProps> = ({ contractAddr, use
         functionName: 'getGranularity',
     })
 
+
     const { config: depositConfig } = usePrepareContractWrite({
         address: contractAddr,
         abi: trailMixAbi,
@@ -124,14 +125,15 @@ const TrailMixComponent: React.FC<TrailMixComponentProps> = ({ contractAddr, use
     const { data: withdrawResult, isLoading: withdrawLoading, isSuccess: withdrawSuccess, write: withdraw } = useContractWrite(withdrawConfig);
 
 
-    const { config: swapConfig } = usePrepareContractWrite({
-        address: contractAddr,
-        abi: trailMixAbi,
-        functionName: 'swapToStablecoin',
-        args: [BigInt(10000000000)],
-    })
+    // JUST FOR TESTING PURPOSES
+    // const { config: swapConfig } = usePrepareContractWrite({
+    //     address: contractAddr,
+    //     abi: trailMixAbi,
+    //     functionName: 'swapToStablecoin',
+    //     args: [BigInt(10000000000)],
+    // })
 
-    const { data: swapResult, isLoading: swapLoading, isSuccess: swapSuccess, write: swap } = useContractWrite(swapConfig);
+    // const { data: swapResult, isLoading: swapLoading, isSuccess: swapSuccess, write: swap } = useContractWrite(swapConfig);
 
 
     const handleApprovalAndDeposit = async () => {
@@ -194,6 +196,7 @@ const TrailMixComponent: React.FC<TrailMixComponentProps> = ({ contractAddr, use
 
             <h1><b> <u>WMATIC/USDC: {trailAmount ? String(trailAmount) : 'Loading'}% trail ({isTSLActive ? 'Active' : 'Inactive'})</u></b></h1>
 
+            <p> Current Price: ${latestPrice ? Number(latestPrice)/dec: 0}</p>
             <p>Threshold: {tslThreshold ? String(Number(tslThreshold) / dec) : 'N/A'},
                 Next update price: {calculateNextUpdatePrice()}</p>
 
@@ -218,7 +221,7 @@ const TrailMixComponent: React.FC<TrailMixComponentProps> = ({ contractAddr, use
                 <button className="btn btn-primary" onClick={withdraw}>Withdraw</button>
             </div>
             {/* <button className="btn btn-primary" onClick={swap}>Swap</button> */}
-            {/* : ''} */}
+            
         </div>
     );
 };
