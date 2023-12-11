@@ -15,7 +15,7 @@ const DeployNewComponent = () => {
 
     const [erc20Token, setErc20Token] = useState<string>("0x9c3c9283d3e44854697cd22d3faa240cfb032889"); // State to store erc20 address
     const [stablecoin, setStablecoin] = useState<string>("0x0FA8781a83E46826621b3BC094Ea2A0212e71B23"); // State to store stablecoin address
-    const [priceFeed, setPriceFeed] = useState<string>("0xF7dd20105a347f08a64CDb7a94763BE8578a1faf"); // State to store price feed address
+    const [priceFeed, setPriceFeed] = useState<string>("0xd0D5e3DB44DE05E9F294BB0a3bEEaF030DE24Ada"); // State to store price feed address
     const [mockPriceFeed, setMockPriceFeed] = useState<string>("0xF7dd20105a347f08a64CDb7a94763BE8578a1faf"); // State to store mock price feed address
     const [uniswapRouter, setUniswapRouter] = useState<string>("0xE592427A0AEce92De3Edee1F18E0157C05861564"); // State to store uniswap router address
     const [trailAmount, setTrailAmount] = useState<bigint>(10n); // State to store trail amount
@@ -37,9 +37,9 @@ const DeployNewComponent = () => {
     }
 
     return (
-        
+
         <div className="box-color rounded-3xl p-2 flex flex-col items-center justify-center">
-            <p className = "block text-2xl font-bold p-4"> Deploy a New Trailing Stop Loss!</p>
+            <p className="block text-2xl font-bold p-4"> Deploy a New Trailing Stop Loss!</p>
             <select
                 className="select select-bordered select-sm w-full max-w-xs"
                 value={erc20Token} // Bind state to the select element
@@ -69,7 +69,7 @@ const DeployNewComponent = () => {
 
             {/* <p> trailing %: {trailAmount.toString()}%</p> */}
         </div>
-    
+
 
     );
 }
