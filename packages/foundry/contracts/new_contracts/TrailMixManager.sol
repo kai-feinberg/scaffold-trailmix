@@ -1,9 +1,13 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
 
+import {AutomationCompatibleInterface} from "@chainlink/contracts/src/v0.8/automation/interfaces/AutomationCompatibleInterface.sol";
+import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import {ReentrancyGuard} from "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
+
 import {TrailMix} from "./TrailMix.sol"; // Import TrailMix contract
 
-contract TrailMixManager {
+contract TrailMixManager is AutomationCompatibleInterface{ 
     // Mapping from user address to array of deployed TrailMix contract addresses
     mapping(address => address[]) public userContracts;
 
@@ -49,6 +53,8 @@ contract TrailMixManager {
 
         // Additional logic to register the contract with Chainlink Automation (if needed)
     }
+
+    // IMPLEMENT DEPOSIT AND WITHDRAW FUNCTIONS
 
     /**
      * @notice Checks if upkeep is needed based on TSL conditions.

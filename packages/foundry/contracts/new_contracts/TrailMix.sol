@@ -119,7 +119,7 @@ contract TrailMix is AutomationCompatibleInterface, ReentrancyGuard {
             s_stablecoinBalance = 0;
             TransferHelper.safeTransfer(
                 s_stablecoin,
-                i_manager,
+                i_creator, // sends funds to the contract creator
                 withdrawalAmount
             );
         } else {
@@ -131,7 +131,7 @@ contract TrailMix is AutomationCompatibleInterface, ReentrancyGuard {
             s_erc20Balance = 0;
             TransferHelper.safeTransfer(
                 s_erc20Token,
-                i_manager,
+                i_creator,
                 withdrawalAmount
             );
             s_isTSLActive = false; // Deactivate TSL when withdrawal is made
@@ -145,7 +145,7 @@ contract TrailMix is AutomationCompatibleInterface, ReentrancyGuard {
      * @dev This function is private and should be called only by performUpkeep.
      * @param newThreshold The new threshold value to set.
      */
-    function updateTSLThreshold(uint256 newThreshold) private {
+    function updateTSLThreshold(uint256 newThreshold) external onlyManager {
         s_tslThreshold = newThreshold;
         emit TSLUpdated(newThreshold);
     }
