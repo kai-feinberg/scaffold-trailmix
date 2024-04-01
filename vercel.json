@@ -1,0 +1,18 @@
+{
+    "version": 2,
+    "builds": [
+        {
+            "src": "scaffold-trailmix/package.json",
+            "use": "@vercel/next"
+        }
+    ],
+    "routes": [
+        {
+            "src": "/(.*)",
+            "dest": "scaffold-trailmix/$1"
+        }
+    ],
+    "scripts": {
+        "preinstall": "yarn workspace @se-2/foundry compile"
+      }
+}

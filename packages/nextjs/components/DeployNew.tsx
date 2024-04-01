@@ -1,7 +1,7 @@
 
 import React from 'react';
-import tmABI from "../../foundry/out/TrailMix.sol/TrailMix.json";
-import ercAbi from "../../foundry/out/ERC20.sol/ERC20.json";
+import tmABI from "../foundry-out/TrailMix.json";
+import ercAbi from "../foundry-out/ERC20.json";
 import { useContractRead, usePrepareContractWrite, useContractWrite } from "wagmi";
 import { Address, IntegerInput } from "~~/components/scaffold-eth";
 import { ReactNode, useEffect, useState } from "react";
